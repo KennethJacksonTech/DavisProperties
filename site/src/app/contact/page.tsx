@@ -1,7 +1,10 @@
 import { PageHero } from "@/components/PageHero";
-import { ContactForm } from "@/components/ContactForm";
+import { getForm, GONZO_API_BASE, GONZO_ORG_SLUG } from "@/lib/gonzo";
+import GonzoForm from "@/components/gonzo-form";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const form = await getForm("contact");
+
   return (
     <>
       <PageHero
@@ -25,7 +28,21 @@ export default function ContactPage() {
               Interested in lot availability or have questions about our
               communities? Fill out the form and we&apos;ll get back to you.
             </p>
-            <ContactForm />
+            {form ? (
+              <GonzoForm
+                form={form}
+                apiBase={GONZO_API_BASE}
+                orgSlug={GONZO_ORG_SLUG}
+              />
+            ) : (
+              <p className="font-body text-[15px] text-foreground-primary">
+                Our online form is temporarily unavailable. Please call us at{" "}
+                <a href="tel:8066811251" className="font-semibold hover:underline text-accent-primary">
+                  (806) 681-1251
+                </a>
+                .
+              </p>
+            )}
           </div>
 
           {/* Right: Info Card */}
